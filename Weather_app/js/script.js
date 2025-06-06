@@ -27,6 +27,10 @@ async function getData() {
 
       var location=document.getElementById("Sun")
       document.getElementById("Sun").innerHTML =(data.current.uv / 10).toFixed(1) + " h";
+
+      const weatherIcon = document.getElementById("weatherIcon");
+      weatherIcon.src = data.current.condition.icon;
+      weatherIcon.alt = data.current.condition.text;
     })
     .catch(error => {
       console.error("Failed to fetch weather data:", error);
