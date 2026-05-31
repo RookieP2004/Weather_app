@@ -1,40 +1,53 @@
 async function getData() {
-    var response = await fetch('https://api.weatherapi.com/v1/current.json?key=f9ffe28bafb14ba0b4394732250506&q=Chandigarh&aqi=no').then(response => {
-         console.log(response.status)
-         return response.json();
+  try {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
 
-    })
-    .then(data => {
-      console.log(data.location);
+        const response = await fetch(
+          `https://api.weatherapi.com/v1/current.json?key=f9ffe28bafb14ba0b4394732250506&q=${lat},${lon}&aqi=no`
+        );
 
-      var location=document.getElementById("Locations")
-      document.getElementById("Locations").innerHTML = data.location.region + ", " + data.location.country;
+        const data = await response.json();
 
-      var time=document.getElementById("Time")
-      document.getElementById("Time").innerHTML = data.location.localtime.split(" ")[1];
+        document.getElementById("Locations").innerHTML =
+          data.location.name + ", " + data.location.country;
 
-      var location=document.getElementById("Temperature")
-      document.getElementById("Temperature").innerHTML =data.current.temp_c + "°C";
-  
-      var location=document.getElementById("Conditions")
-      document.getElementById("Conditions").innerHTML =data.current.condition.text;
+        document.getElementById("Time").innerHTML =
+          data.location.localtime.split(" ")[1];
 
-      var location=document.getElementById("Wind")
-      document.getElementById("Wind").innerHTML =data.current.wind_kph + " km/h";
+        document.getElementById("Temperature").innerHTML =
+          data.current.temp_c + "°C";
 
-      var location=document.getElementById("Humidity")
-      document.getElementById("Humidity").innerHTML =data.current.humidity + "%";
+        document.getElementById("Conditions").innerHTML =
+          data.current.condition.text;
 
-      var location=document.getElementById("Sun")
-      document.getElementById("Sun").innerHTML =(data.current.uv / 10).toFixed(1) + " h";
+        document.getElementById("Wind").innerHTML =
+          data.current.wind_kph + " km/h";
 
-      const weatherIcon = document.getElementById("weatherIcon");
-      weatherIcon.src = data.current.condition.icon;
-      weatherIcon.alt = data.current.condition.text;
-    })
-    .catch(error => {
-      console.error("Failed to fetch weather data:", error);
-    });
+        document.getElementById("Humidity").innerHTML =
+          data.current.humidity + "%";
+
+        document.getElementById("Sun").innerHTML =
+          (data.current.uv / 10).toFixed(1) + " h";
+
+        document.getElementById("weatherIcon").src =
+          "https:" + data.current.condition.icon;
+
+        document.getElementById("weatherIcon").alt =
+          data.current.condition.text;
+      },
+      (error) => {
+        console.error("Location access denied:", error);
+
+        document.getElementById("Locations").innerHTML =
+          "Location access denied";
+      }
+    );
+  } catch (error) {
+    console.error("Failed to fetch weather data:", error);
+  }
 }
 
 getData();
