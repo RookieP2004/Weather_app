@@ -1,5 +1,5 @@
 async function getData() {
-    var response = await fetch('http://api.weatherapi.com/v1/current.json?key=f9ffe28bafb14ba0b4394732250506&q=Chandigarh&aqi=no').then(response => {
+    var response = await fetch('https://api.weatherapi.com/v1/current.json?key=f9ffe28bafb14ba0b4394732250506&q=Chandigarh&aqi=no').then(response => {
          console.log(response.status)
          return response.json();
 

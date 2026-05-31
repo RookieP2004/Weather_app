@@ -1,5 +1,5 @@
 async function getData() {
-    var response = await fetch('http://api.weatherapi.com/v1/current.json?key=f9ffe28bafb14ba0b4394732250506&q=Chandigarh&aqi=no').then(response => {
+    var response = await fetch('https://api.weatherapi.com/v1/current.json?key=f9ffe28bafb14ba0b4394732250506&q=Chandigarh&aqi=no').then(response => {
          console.log(response.status)
          return response.json();
 
@@ -29,7 +29,7 @@ async function getData() {
       document.getElementById("Sun").innerHTML =(data.current.uv / 10).toFixed(1) + " h";
 
       const weatherIcon = document.getElementById("weatherIcon");
-      weatherIcon.src = data.current.condition.icon;
+      weatherIcon.src = "https:" + data.current.condition.icon;
       weatherIcon.alt = data.current.condition.text;
     })
     .catch(error => {
